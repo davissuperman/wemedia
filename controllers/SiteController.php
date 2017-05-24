@@ -145,4 +145,11 @@ class SiteController extends Controller
             return $this->render('entry', ['model' => $model]);
         }
     }
+
+    public function actionTest(){
+        $userHost = Yii::$app->request->userHost;
+        $userIP = Yii::$app->request->userIP;
+
+        echo $userHost.$userIP;
+    }
 }
