@@ -7,6 +7,8 @@ use yii\widgets\ActiveForm;
 <?= $form->field($model, 'fromUrl') ?>
 
 <?= $form->field($model, 'readMax') ?>
+<?= $form->field($model, 'startTime') ?>
+<?= $form->field($model, 'endTime') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
