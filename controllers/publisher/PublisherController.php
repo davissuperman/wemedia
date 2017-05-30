@@ -1,5 +1,5 @@
 <?php
-namespace app\controllers;
+namespace app\controllers\publisher;
 use Yii;
 use app\models\Country;
 use app\models\CountrySearch;
