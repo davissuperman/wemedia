@@ -121,4 +121,25 @@ class PublisherController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionSubmitform()
+    {
+        $model = new Publisher();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                // form inputs are valid, do something here
+                return;
+            }
+        }
+
+        return $this->render('submitform', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionTest(){
+        echo 'aaaaaaaaaa';
+    }
+
 }
