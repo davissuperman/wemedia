@@ -128,7 +128,10 @@ class PublisherController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
-                // form inputs are valid, do something here
+                $model->load(Yii::$app->request->post());
+                $model->save();
+                $return = array($model->id,"success");
+                echo json_encode($return);
                 return;
             }
         }
