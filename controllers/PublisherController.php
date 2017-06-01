@@ -131,6 +131,7 @@ class PublisherController extends Controller
                 $model->load(Yii::$app->request->post());
                 $model->save();
                 $return = array($model->id,"success");
+                //TODO 返回包装过的URL
                 echo json_encode($return);
                 return;
             }
