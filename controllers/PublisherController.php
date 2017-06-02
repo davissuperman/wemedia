@@ -141,7 +141,14 @@ class PublisherController extends Controller
             'model' => $model,
         ]);
     }
-
+    /**
+     * @SWG\Swagger(
+     *   @SWG\Info(
+     *     title="My first swagger documented API",
+     *     version="1.0.0"
+     *   )
+     * )
+     */
     public function actionTest(){
         echo 'aaaaaaaaaa';
     }

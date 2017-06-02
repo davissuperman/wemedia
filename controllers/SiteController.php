@@ -147,9 +147,14 @@ class SiteController extends Controller
     }
 
     public function actionTest(){
-        $userHost = Yii::$app->request->userHost;
-        $userIP = Yii::$app->request->userIP;
 
-        echo $userHost.$userIP;
+        $b2broot = Yii::$app->basePath;
+        $swagger = \Swagger\scan($b2broot.'/controllers');
+        $json_file = $b2broot.'/swagger-docs/swagger.json';
+        $is_write = file_put_contents($json_file, $swagger);
+        if ($is_write == true) {
+          //  $this->redirect('http://localhost/yii2/swagger-ui/dist/index.html');
+        }
+
     }
 }
