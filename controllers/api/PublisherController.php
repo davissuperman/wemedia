@@ -49,7 +49,7 @@ class PublisherController extends ActiveController
     public function actions()
     {
         $actions = parent::actions();
-        // ע��ϵͳ�Դ���ʵ�ַ���
+        // 注销系统自带的实现方法
         unset($actions['index'], $actions['update'], $actions['create'], $actions['delete'], $actions['view']);
         return $actions;
     }
@@ -107,33 +107,33 @@ class PublisherController extends ActiveController
      *   path="http://47.92.111.169/wemedia/web/api/publisher/create",
      *   summary="create a new publisher",
      * @SWG\Parameter(
-     * name="fromurl",in="path",description=" from url",required=true,type="string"
+     * name="fromurl",in="path",description=" 外部链接",required=true,type="string"
       * ),
      * @SWG\Parameter(
      *       name="title",
      *       in="path",
-     *       description="biaoti",
+     *       description="标题",
      *       required=true,
      *       type="string",
      *     ),
      *    * @SWG\Parameter(
      *       name="readmax",
      *       in="path",
-     *       description="read max",
+     *       description="文章阅读量",
      *       required=true,
      *       type="integer",
      *     ),
      *  *    * @SWG\Parameter(
      *       name="starttime",
      *       in="path",
-     *       description="start time format should be yyyy-m-d h:i:s",
+     *       description="开始时间",
      *       required=false,
      *       type="string",
      *     ),
      *  *    * @SWG\Parameter(
      *       name="endtime",
      *       in="path",
-     *       description="end time format should be yyyy-m-d h:i:s",
+     *       description="结束时间",
      *       required=false,
      *       type="string",
      *     ),
