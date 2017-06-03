@@ -56,7 +56,7 @@ class PublisherController extends ActiveController
     /**
      * @SWG\Get(
      *   path="http://47.92.111.169/wemedia/web/api/publisher/index",
-     *   summary="list publisher",
+     *   summary="取得所有发布的任务",
      *   tags={"publisher"},
      * description="取得所有发布的任务",
       *   @SWG\Response(
@@ -109,6 +109,7 @@ class PublisherController extends ActiveController
      * @SWG\Post(
      *   path="http://47.92.111.169/wemedia/web/api/publisher/create",
      *   summary="创建一个新的任务",
+     *  tags={"publisher"},
      * @SWG\Parameter(
      * name="fromurl",in="path",description=" 外部链接",required=true,type="string"
       * ),
