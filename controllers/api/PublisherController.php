@@ -59,7 +59,7 @@ class PublisherController extends ActiveController
      *   summary="list publisher",
      *   @SWG\Response(
      *     response=200,
-     *     description="A list with products"
+     *     description="A list with publisher"
      *   ),
      *   @SWG\Response(
      *     response="default",
@@ -75,6 +75,20 @@ class PublisherController extends ActiveController
             'query' => $query,
         ]);
     }
+    /**
+     * @SWG\Get(
+     *   path="http://47.92.111.169/wemedia/web/api/publisher/view?id=XXX",
+     *   summary="view publisher detail" ,
+     *   @SWG\Response(
+     *     response=200,
+     *     description=" publisher detail info"
+     *   ),
+     *   @SWG\Response(
+     *     response="default",
+     *     description="an ""unexpected"" error"
+     *   )
+     * )
+     */
     public function actionView($id)
     {
         return $this->findModel($id);
@@ -88,7 +102,51 @@ class PublisherController extends ActiveController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
+    /**
+     * @SWG\Post(
+     *   path="http://47.92.111.169/wemedia/web/api/publisher/create",
+     *   summary="create a new publisher",
+     * @SWG\Parameter(
+     * name="fromurl",in="path",description=" from url",required=true,type="string"
+      * ),
+     * @SWG\Parameter(
+     *       name="title",
+     *       in="path",
+     *       description="biaoti",
+     *       required=true,
+     *       type="string",
+     *     ),
+     *    * @SWG\Parameter(
+     *       name="readmax",
+     *       in="path",
+     *       description="read max",
+     *       required=true,
+     *       type="integer",
+     *     ),
+     *  *    * @SWG\Parameter(
+     *       name="starttime",
+     *       in="path",
+     *       description="start time format should be yyyy-m-d h:i:s",
+     *       required=true,
+     *       type="string",
+     *     ),
+     *  *    * @SWG\Parameter(
+     *       name="endtime",
+     *       in="path",
+     *       description="end time format should be yyyy-m-d h:i:s",
+     *       required=true,
+     *       type="string",
+     *     ),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="new publisher info"
+     *   ),
+     *   @SWG\Response(
+     *     response="default",
+     *     description="an ""unexpected"" error"
+     *   )
+     * )
+     */
     public function actionCreate()
     {
         $model = new $this->modelClass();
