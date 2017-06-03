@@ -55,7 +55,7 @@ class PublisherController extends ActiveController
     }
     /**
      * @SWG\Get(
-     *   path="http://47.92.111.169/wemedia/web/api/publishers/index",
+     *   path="http://47.92.111.169/wemedia/web/api/publisher/index",
      *   summary="list publisher",
      *   @SWG\Response(
      *     response=200,
