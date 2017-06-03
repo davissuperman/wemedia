@@ -110,6 +110,13 @@ class PublisherController extends ActiveController
      *   path="http://47.92.111.169/wemedia/web/api/publisher/create",
      *   summary="创建一个新的任务",
      *  tags={"publisher"},
+     *   * @SWG\Parameter(
+     *       name="uid",
+     *       in="path",
+     *       description="当前登录的用户UID",
+     *       required=true,
+     *       type="integer",
+     *     ),
      * @SWG\Parameter(
      * name="fromurl",in="path",description=" 外部链接",required=true,type="string"
       * ),
