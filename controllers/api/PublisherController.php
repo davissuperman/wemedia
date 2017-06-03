@@ -57,7 +57,9 @@ class PublisherController extends ActiveController
      * @SWG\Get(
      *   path="http://47.92.111.169/wemedia/web/api/publisher/index",
      *   summary="list publisher",
-     *   @SWG\Response(
+     *   tags={"publisher"},
+     * description="取得所有发布的任务",
+      *   @SWG\Response(
      *     response=200,
      *     description="A list with publisher"
      *   ),
@@ -78,7 +80,8 @@ class PublisherController extends ActiveController
     /**
      * @SWG\Get(
      *   path="http://47.92.111.169/wemedia/web/api/publisher/view?id=XXX",
-     *   summary="view publisher detail" ,
+     *   summary="根据ID获取任务详情" ,
+     * tags={"publisher"},
      *   @SWG\Response(
      *     response=200,
      *     description=" publisher detail info"
@@ -105,7 +108,7 @@ class PublisherController extends ActiveController
     /**
      * @SWG\Post(
      *   path="http://47.92.111.169/wemedia/web/api/publisher/create",
-     *   summary="create a new publisher",
+     *   summary="创建一个新的任务",
      * @SWG\Parameter(
      * name="fromurl",in="path",description=" 外部链接",required=true,type="string"
       * ),
@@ -156,6 +159,7 @@ class PublisherController extends ActiveController
         }
         return $model;
     }
+
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
