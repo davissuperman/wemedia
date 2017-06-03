@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers\api;
 
 use Yii;
@@ -14,9 +13,24 @@ use yii\rest\ActiveController;
  */
 class PublisherController extends ActiveController
 {
+    /**
+     * @inheritdoc
+     */
     public $modelClass = 'app\models\Publisher';
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items',
+    ];
+    /**
+     * @SWG\Swagger(
+     *   @SWG\Info(
+     *     title="My first swagger documented API",
+     *     version="1.0.0"
+     *   )
+     * )
+     */
     public function actionTest(){
-        echo 'aaaaaaaaaa';
+        echo json_encode(array('aa'));
     }
 
 }
