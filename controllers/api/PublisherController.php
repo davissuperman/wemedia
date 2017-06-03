@@ -127,14 +127,14 @@ class PublisherController extends ActiveController
      *       name="starttime",
      *       in="path",
      *       description="start time format should be yyyy-m-d h:i:s",
-     *       required=true,
+     *       required=false,
      *       type="string",
      *     ),
      *  *    * @SWG\Parameter(
      *       name="endtime",
      *       in="path",
      *       description="end time format should be yyyy-m-d h:i:s",
-     *       required=true,
+     *       required=false,
      *       type="string",
      *     ),
      *   @SWG\Response(
