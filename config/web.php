@@ -1,7 +1,7 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
-
+Yii::$classMap['REST'] = '@app/libs/sms/REST.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),

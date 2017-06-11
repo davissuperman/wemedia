@@ -9,7 +9,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\EntryForm;
-
+use Smsrest;
 
 class SiteController extends Controller
 {
@@ -156,5 +156,54 @@ class SiteController extends Controller
           //  $this->redirect('http://localhost/yii2/swagger-ui/dist/index.html');
         }
 
+    }
+
+    public function actionSms(){
+        $this->sendSms("13817410630",array(12345,"2分钟"),"111261");
+    }
+    function sendSms($to,$datas,$tempId)
+    {
+        // 初始化REST SDK
+        //主帐号
+        $accountSid= '8a216da8566d11660156702508100377';
+
+//主帐号Token
+        $accountToken= 'c5fb0dc16c064310a602d7528d4b5c39';
+
+//应用Id
+        $appId='8a216da8567745c001567a2350ed0497';
+
+//请求地址，格式如下，不需要写https://
+        $serverIP='app.cloopen.com';
+
+//请求端口
+        $serverPort='8883';
+
+//REST版本号
+        $softVersion='2013-12-26';
+
+        $rest = new \REST($serverIP,$serverPort,$softVersion);
+        $rest->setAccount($accountSid,$accountToken);
+        $rest->setAppId($appId);
+
+        // 发送模板短信
+        echo "Sending TemplateSMS to $to <br/>";
+        $result = $rest->sendTemplateSMS($to,$datas,$tempId);
+        if($result == NULL ) {
+            echo "result error!";
+            return;
+        }
+        if($result->statusCode!=0) {
+            echo "error code :" . $result->statusCode . "<br>";
+            echo "error msg :" . $result->statusMsg . "<br>";
+            //TODO 添加错误处理逻辑
+        }else{
+            echo "Sendind TemplateSMS success!<br/>";
+            // 获取返回信息
+            $smsmessage = $result->TemplateSMS;
+            echo "dateCreated:".$smsmessage->dateCreated."<br/>";
+            echo "smsMessageSid:".$smsmessage->smsMessageSid."<br/>";
+            //TODO 添加成功处理逻辑
+        }
     }
 }
