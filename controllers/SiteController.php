@@ -155,7 +155,7 @@ class SiteController extends Controller
         if ($is_write == true) {
           //  $this->redirect('http://localhost/yii2/swagger-ui/dist/index.html');
         }
-
+        echo 'aaa';
     }
 
     public function actionSms(){
