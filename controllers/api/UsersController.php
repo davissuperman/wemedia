@@ -2,7 +2,7 @@
 namespace app\controllers\api;
 
 use Yii;
-use app\models\Publisher;
+use app\models\Example;
  use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -15,7 +15,7 @@ class UsersController extends ActiveController
     /**
      * @inheritdoc
      */
-    public $modelClass = 'app\models\Users';
+    public $modelClass = 'app\models\Example';
     public $serializer = [
         'class' => 'yii\rest\Serializer',
         'collectionEnvelope' => 'items',
@@ -32,8 +32,9 @@ class UsersController extends ActiveController
         ] );
     }
 
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return static::findOne(['access_token' => $token, 'status' => self::STATUS_ACTIVE]);
+    public function createUser(){
+        $model = new Example();
+//        $model->username=$name;
     }
+
 }

@@ -9,7 +9,7 @@ class ExampleController extends \yii\rest\Controller
     public function behaviors(){
         $behaviors= parent::behaviors();
         $behaviors['authenticator'] = [
-        'class'=> QueryParamAuth::className(),
+            'class'=> QueryParamAuth::className(),
         ];
         return $behaviors;
     }
