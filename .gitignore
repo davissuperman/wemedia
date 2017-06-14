@@ -32,3 +32,4 @@ swagger-docs
 swagger-docs/*
 
 web/swagger-ui
+/log.txt
