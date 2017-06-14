@@ -64,12 +64,12 @@ class TelephoneController extends ActiveController
 
         $telephoneFind = Telephone::find()
             ->where(['telephone' => $telephone])
-            ->one();;
+            ->one();
         if($telephoneFind){
             //update existed number 是否是两分钟
             $currentTime = time();
             $existed = $telephoneFind->createtime;
-            if( ($currentTime-$existed) < $this->minuteToResend*60){
+            if( ($currentTime-strtotime($existed) ) < $this->minuteToResend*60){
                 //update with new number
                 $number = rand(1000,9999);
                 $telephoneFind->code = $number;
@@ -98,6 +98,57 @@ class TelephoneController extends ActiveController
         }
 
     }
+    /**
+     * @SWG\Post(
+     *   path="http://47.92.111.169/wemedia/web/api/telephone/login",
+     *   summary="手机登录",
+     *  tags={"用户登录相关"},
+     *   @SWG\Parameter(
+     *       name="telephone",
+     *       in="path",
+     *       description="用户手机号码",
+     *       required=true,
+     *       type="integer",
+     *     ),
+     *  *   @SWG\Parameter(
+     *       name="code",
+     *       in="path",
+     *       description="验证码",
+     *       required=true,
+     *       type="integer",
+     *     ),
+     *  @SWG\Response(
+     *     response="default",
+     *     description="an ""unexpected"" error"
+     *   ),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="返回JSON字符串 {code:XXXX}"
+     *   ),
+     * @SWG\Response(
+     *     response=201,
+     *     description="手机号不能为空"
+     *   ),
+     *  @SWG\Response(
+     *     response=202,
+     *     description="系统错误"
+     *   )
+
+     * )
+     */
+    public function actionLogin(){
+        $telephone =  Yii::$app->request->post('telephone');
+        $code =  Yii::$app->request->post('code');
+        if(!$telephone || !$code){
+            $return = array(
+                'code' => 201,
+                'msg' => '手机号，验证码不能为空'
+            );
+            echo json_encode($return);
+            return;
+        }
+    }
+
 
     function sendSms($to,$datas,$tempId)
     {
