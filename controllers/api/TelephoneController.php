@@ -60,7 +60,8 @@ class TelephoneController extends ActiveController
             echo  json_encode(array("code"=>201,'msg'=>'手机号不能为空'));
             return;
         }
-        $number = rand(1000,9999);
+        $number = null;
+
         $telephoneFind = Telephone::find()
             ->where(['telephone' => $telephone])
             ->one();;
@@ -70,14 +71,17 @@ class TelephoneController extends ActiveController
             $existed = $telephoneFind->createtime;
             if( ($currentTime-$existed) < $this->minuteToResend*60){
                 //update with new number
+                $number = rand(1000,9999);
                 $telephoneFind->code = $number;
                 $telephoneFind->save();
                 $return =  json_encode(array("code"=>200,'code'=>$number));
             }else{
                 //返回原来存在的
+                $number = $telephoneFind->code;
                 $return =   json_encode(array("code"=>200,'code'=>$telephoneFind->code));
             }
         }else{
+            $number = rand(1000,9999);
             $model = new Telephone();
             $model->telephone = $telephone;
             $model->code = $number;
