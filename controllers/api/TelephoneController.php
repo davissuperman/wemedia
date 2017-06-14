@@ -117,19 +117,19 @@ class TelephoneController extends ActiveController
      *     ),
      *  @SWG\Response(
      *     response="default",
-     *     description="an ""unexpected"" error"
+     *     description="返回每次请求需要带上的TOKEN"
      *   ),
      *   @SWG\Response(
      *     response=200,
-     *     description="返回JSON字符串 {code:XXXX}"
+     *     description="返回JSON字符串 {token:XXXX}"
      *   ),
      * @SWG\Response(
      *     response=201,
-     *     description="手机号不能为空"
+     *     description="手机号,验证码不能为空"
      *   ),
      *  @SWG\Response(
      *     response=202,
-     *     description="系统错误"
+     *     description="验证码不一致，请重新发送"
      *   )
 
      * )
@@ -144,6 +144,19 @@ class TelephoneController extends ActiveController
             );
             return json_encode($return);
         }
+        //根据手机号取得验证码
+        $telephoneFind = Telephone::find()
+            ->where(['telephone' => $telephone])
+            ->one();
+        $codeInDatabase = $telephoneFind->code;
+        if($codeInDatabase != $code){
+            $return = array(
+                'code' => 202,
+                'msg' => '验证码不一致，请重新发送'
+            );
+            return $return;
+        }
+        //登录成功，获取TOKEN并且返回
     }
 
 
