@@ -93,10 +93,8 @@ class TelephoneController extends ActiveController
         }
 
         if($this->sendSms($telephone,array($number,$this->minuteToResend."分钟"),"111261") == 1){
-            echo $return;
-            return;
+            return $return;
         }
-
     }
     /**
      * @SWG\Post(
@@ -144,8 +142,7 @@ class TelephoneController extends ActiveController
                 'code' => 201,
                 'msg' => '手机号，验证码不能为空'
             );
-            echo json_encode($return);
-            return;
+            return json_encode($return);
         }
     }
 
