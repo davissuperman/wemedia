@@ -176,6 +176,7 @@ class TelephoneController extends ActiveController
             $model = new Users();
             $model->telephone = $telephone;
             $model->auth_key = $this->generateAuthKey();
+            $model->status = 10;
             try{
                 $model->save();
             }catch (\Exception $e){

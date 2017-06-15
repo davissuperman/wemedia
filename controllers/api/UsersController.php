@@ -20,17 +20,18 @@ class UsersController extends ActiveController
         'class' => 'yii\rest\Serializer',
         'collectionEnvelope' => 'items',
     ];
-    public function behaviors(){
-        $behaviors= parent::behaviors();
-        $behaviors['authenticator'] = [
-            'class'=> QueryParamAuth::className(),
-        ];
-        return $behaviors;
-    }
+//    public function behaviors(){
+//        $behaviors= parent::behaviors();
+//        $behaviors['authenticator'] = [
+//            'class'=> QueryParamAuth::className(),
+//            'tokenParam' => 'token'
+//        ];
+//        return $behaviors;
+//    }
     protected function verbs()
     {
         return [
-            'index' => ['GET'],
+            'index' => ['POST'],
         ];
     }
     public function actionTest(){
@@ -41,22 +42,36 @@ class UsersController extends ActiveController
 
     /**
      * @SWG\Post(
-     *   path="http://47.92.111.169/wemedia/web/api/users/bindOpenid",
-     *   summary="绑定OPENID",
+     *   path="http://47.92.111.169/wemedia/web/api/users/wechatinfosave",
+     *   summary="手机登录后，绑定微信",
      *  tags={"用户登录相关"},
      *   @SWG\Parameter(
-     *       name="telephone",
+     *       name="uid",
      *       in="path",
-     *       description="用户手机号码",
+     *       description="用户手机登录后返回的UID",
      *       required=true,
      *       type="integer",
      *     ),
      *  *   @SWG\Parameter(
-     *       name="code",
+     *       name="token",
      *       in="path",
-     *       description="验证码",
+     *       description="用户手机登录后返回的TOKEN",
      *       required=true,
-     *       type="integer",
+     *       type="string",
+     *     ),
+     *  *  *   @SWG\Parameter(
+     *       name="nickname",
+     *       in="path",
+     *       description="微信返回的昵称",
+     *       required=true,
+     *       type="string",
+     *     ),
+     *  *  *  *   @SWG\Parameter(
+     *       name="sex",
+     *       in="path",
+     *       description="微信返回的性别 1或者0",
+     *       required=true,
+     *       type="string",
      *     ),
      *  @SWG\Response(
      *     response="default",
@@ -64,21 +79,60 @@ class UsersController extends ActiveController
      *   ),
      *   @SWG\Response(
      *     response=200,
-     *     description="返回JSON字符串 {token:XXXX,uid:XXX}"
+     *     description="绑定成功"
      *   ),
      * @SWG\Response(
      *     response=201,
-     *     description="手机号,验证码不能为空"
+     *     description="用户不存在"
      *   ),
-     *  @SWG\Response(
-     *     response=202,
-     *     description="验证码不一致，请重新发送"
-     *   )
+
 
      * )
      */
-    public function actionBindOpenid(){
+    public function actionWechatinfosave(){
+        //绑定微信到登录的手机号
+        /*
+         * {
+    "subscribe": 1,
+    "openid": "oLVPpjqs2BhvzwPj5A-vTYAX4GLc",
+    "nickname": "刺猬宝宝",
+    "sex": 1,
+    "language": "zh_CN",
+    "city": "深圳",
+    "province": "广东",
+    "country": "中国",
+    "headimgurl": "http://wx.qlogo.cn/mmopen/JcDicrZBlREhnNXZRudod9PmibRkIs5K2f1tUQ7lFjC63pYHaXGxNDgMzjGDEuvzYZbFOqtUXaxSdoZG6iane5ko9H30krIbzGv/0",
+    "subscribe_time": 1386160805
+}
+         */
+        $uid =  Yii::$app->request->post('uid');
+        $openid =  Yii::$app->request->post('openid');
+        $nickname =  Yii::$app->request->post('nickname');
+        $sex =  Yii::$app->request->post('sex');
 
+        $uid = 5;
+        $openid= 'abcde';
+        $nickname ='davis';
+        $sex =1;
+        $model = Users::find()->where(['id'=>$uid])->one();
+//        echo $model->telephone;die;
+        if($model){
+            //save info
+            $model->openid = $openid;
+//            $model->nickname = $nickname;
+//            $model->sex = $sex;
+            $model->save();
+            $return = array(
+                'code' => 200,
+                'msg' => '绑定成功'
+            );
+        }else{
+            $return = array(
+                'code' => 201,
+                'msg' => "UID $uid 用户不存在"
+            );
+        }
+        return $return;
     }
 
 }
