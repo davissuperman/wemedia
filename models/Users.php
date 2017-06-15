@@ -3,7 +3,10 @@
 namespace app\models;
 
 use Yii;
-
+use yii\base\NotSupportedException;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 /**
  * This is the model class for table "users".
  *
@@ -24,16 +27,39 @@ use Yii;
  * @property string $educational
  * @property string $marital
  */
-class Users extends \yii\db\ActiveRecord
+class Users extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 10;
+    public static function tableName()
+    {
+        return '{{%users}}';
+    }
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public function behaviors()
     {
-        return 'users';
+        return [
+            TimestampBehavior::className(),
+        ];
     }
-
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        //throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['auth_key' => $token, 'status' => self::STATUS_ACTIVE]);
+    }
+    /**
     /**
      * @inheritdoc
      */
@@ -74,4 +100,38 @@ class Users extends \yii\db\ActiveRecord
             'marital' => 'Marital',
         ];
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * Generates "remember me" authentication key
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+    /**
+     * Generates new password reset token
+     */
+
 }
