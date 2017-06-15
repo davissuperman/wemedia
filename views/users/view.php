@@ -44,6 +44,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'trip',
             'educational',
             'marital',
+            'auth_key',
+            'status',
         ],
     ]) ?>
 

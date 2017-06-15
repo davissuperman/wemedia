@@ -3,10 +3,7 @@
 namespace app\models;
 
 use Yii;
-use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
+
 /**
  * This is the model class for table "users".
  *
@@ -26,53 +23,33 @@ use yii\web\IdentityInterface;
  * @property string $trip
  * @property string $educational
  * @property string $marital
+ * @property string $auth_key
+ * @property integer $status
  */
-class Users extends \yii\db\ActiveRecord implements IdentityInterface
+class Users extends \yii\db\ActiveRecord
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
-        return '{{%users}}';
+        return 'users';
     }
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
-    }
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
-    {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
-    }
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        //throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-        return static::findOne(['auth_key' => $token, 'status' => self::STATUS_ACTIVE]);
-    }
-    /**
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-//            [['openid', 'fund', 'nickname', 'telephone', 'sex', 'age', 'industry', 'position', 'hobbies', 'habits', 'residence', 'trip', 'educational', 'marital'], 'required'],
-            [['fund', 'sex'], 'integer'],
+            [['fund', 'sex', 'status'], 'integer'],
+            [['telephone', 'status'], 'required'],
             [['birthday'], 'safe'],
             [['openid'], 'string', 'max' => 50],
             [['nickname'], 'string', 'max' => 100],
             [['telephone', 'age', 'industry', 'hobbies', 'habits', 'residence', 'trip', 'marital'], 'string', 'max' => 20],
             [['position', 'educational'], 'string', 'max' => 10],
+            [['auth_key'], 'string', 'max' => 200],
         ];
     }
 
@@ -98,40 +75,8 @@ class Users extends \yii\db\ActiveRecord implements IdentityInterface
             'trip' => 'Trip',
             'educational' => 'Educational',
             'marital' => 'Marital',
+            'auth_key' => 'Auth Key',
+            'status' => 'Status',
         ];
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
-        return $this->getPrimaryKey();
-    }
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
-    /**
-     * Generates "remember me" authentication key
-     */
-    public function generateAuthKey()
-    {
-        $this->auth_key = Yii::$app->security->generateRandomString();
-    }
-    /**
-     * Generates new password reset token
-     */
-
 }
