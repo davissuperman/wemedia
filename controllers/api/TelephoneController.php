@@ -3,7 +3,9 @@ namespace app\controllers\api;
 
 use Yii;
 use app\models\Telephone;
- use yii\web\Controller;
+use app\models\Users;
+use yii\base\Exception;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
@@ -121,7 +123,7 @@ class TelephoneController extends ActiveController
      *   ),
      *   @SWG\Response(
      *     response=200,
-     *     description="返回JSON字符串 {token:XXXX}"
+     *     description="返回JSON字符串 {token:XXXX,uid:XXX}"
      *   ),
      * @SWG\Response(
      *     response=201,
@@ -156,10 +158,43 @@ class TelephoneController extends ActiveController
             );
             return $return;
         }
-        //登录成功，获取TOKEN并且返回
+        //登录成功，获取TOKEN,uid并且返回
+        //根据判断此y用户是否存在
+        $userExist = Users::find()
+            ->where(['telephone' => $telephone])
+            ->one();
+         if($userExist){
+            $token = $userExist->auth_key;
+            $uid = $userExist->id;
+            $return = array(
+                'code' => 200,
+                'token' => $token,
+                'uid' => $uid
+            );
+        }else{
+
+            $model = new Users();
+            $model->telephone = $telephone;
+            $model->auth_key = $this->generateAuthKey();
+            try{
+                $model->save();
+            }catch (\Exception $e){
+                var_dump($e->getMessage());
+            }
+             $return = array(
+                 'code' => 200,
+                 'token' => $model->auth_key,
+                 'uid' => $model->id
+             );
+
+        }
+        return $return;
     }
 
-
+    public function generateAuthKey()
+    {
+        return  Yii::$app->security->generateRandomString();
+    }
     function sendSms($to,$datas,$tempId)
     {
         $return = null;

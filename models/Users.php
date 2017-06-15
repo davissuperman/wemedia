@@ -40,7 +40,7 @@ class Users extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['openid', 'fund', 'nickname', 'telephone', 'sex', 'age', 'industry', 'position', 'hobbies', 'habits', 'residence', 'trip', 'educational', 'marital'], 'required'],
+//            [['openid', 'fund', 'nickname', 'telephone', 'sex', 'age', 'industry', 'position', 'hobbies', 'habits', 'residence', 'trip', 'educational', 'marital'], 'required'],
             [['fund', 'sex'], 'integer'],
             [['birthday'], 'safe'],
             [['openid'], 'string', 'max' => 50],
